@@ -29,6 +29,7 @@ function clearProgram() {
 function formatList(program) {
     let show = document.createElement("li");
     show.classList.add("list-group-item");
+    show.classList.add("show-previous");
     show.innerHTML = "Visa tidigare program";
     show.style.textAlign = "center";
     list.appendChild(show);
@@ -119,7 +120,8 @@ function printList(sortedList) {
         list.appendChild(listItem);
     }
     let schedule = document.getElementById("js-schedule");
-    list.classList.add("list-group%20list-group-flush");
+    list.classList.add("list-group");
+    list.classList.add("list-group-flush");
     schedule.appendChild(list);
 }
 function toggleMenu() {
