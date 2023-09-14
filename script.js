@@ -133,13 +133,10 @@ function menuAnimation1() {
     menu.style.transition = "all 300ms";
     if (menu.style.left == "0px") {
         menu.style.left = "-300px";
-        button.classList.replace("fa-times", "fa-bars");
-        button.classList.replace("fa", "fas");
     } else if (menu.style.left == "-300px") {
         menu.style.left = "0px";
-        button.classList.replace("fa-bars", "fa-times");
-        button.classList.replace("fas", "fa");
     }
+    switchMenuButton(button, menu.style.left);
 }
 // denna animation använder sig av setInterval i javascript som sedan ändrar värdet på left i css style. Nackdel: mer kod, svårare att bestämma vilken hastighet animationen kommer ha
 function menuAnimation2() {
@@ -150,16 +147,12 @@ function menuAnimation2() {
     let rightInterval;
     if (menu.style.left == "0px") {
         leftInterval = setInterval(moveLeft, 10);
-        button.classList.replace("fa-times", "fa-bars");
-        button.classList.replace("fa", "fas");
     } else if (menu.style.left == "-300px") {
         rightInterval = setInterval(moveRight, 10);
-        button.classList.replace("fa-bars", "fa-times");
-        button.classList.replace("fas", "fa");
     }
+    switchMenuButton(button, menu.style.left);
     function moveLeft() {
         let leftPos = parseInt(menu.style.left.replace("px", ""));
-        console.log(leftPos);
         menu.style.left = (leftPos - s) + "px";
         if (menu.style.left == "-300px") {
             clearInterval(leftInterval);
@@ -167,11 +160,19 @@ function menuAnimation2() {
     }
     function moveRight() {
         let leftPos = parseInt(menu.style.left.replace("px", ""));
-        console.log(leftPos);
         menu.style.left = (leftPos + s) + "px";
         if (menu.style.left == "0px") {
             clearInterval(rightInterval);
         }
+    }
+}
+function switchMenuButton (button, left) {
+    if (left == "-300px") {
+        button.classList.replace("fa-times", "fa-bars");
+        button.classList.replace("fa", "fas");
+    } else if (left == "0px") {
+        button.classList.replace("fa-bars", "fa-times");
+        button.classList.replace("fas", "fa");
     }
 }
 function hideLoading() {
