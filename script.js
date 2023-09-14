@@ -134,7 +134,7 @@ function toggleMenu() {
 function menuAnimation1() {
     let menu = document.getElementsByClassName("menu").item(0);
     let button = document.getElementsByClassName("menu-icon").item(0).firstElementChild;
-    menu.style.transition = "all .3s";
+    menu.style.transition = "all 300ms";
     if (menu.style.left == "0px") {
         menu.style.left = "-300px";
         button.classList.replace("fa-times", "fa-bars");
