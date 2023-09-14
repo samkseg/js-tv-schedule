@@ -6,15 +6,23 @@ let loadingGIF = document.getElementById("js-loading");
 
 menu.style.left = "-300px";
 
+loadCannel("SVT 1", "data/SVT 1.json");
+
 function setChannel(channel) {
     clearProgram();
     switch (channel) {
-        case "SVT 1": loadSVT1(); break;
-        case "SVT 2": loadSVT2(); break;
-        case "SVT Barn": loadSVTBarn(); break;
-        case "Kunskapskanalen": loadKunskapskanalen(); break;
-        case "SVT 24": loadSVT24(); break;
+        case "SVT 1": loadCannel("SVT 1", "data/SVT 1.json"); break;
+        case "SVT 2": loadCannel("SVT 2", "data/SVT 2.json"); break;
+        case "SVT Barn": loadCannel("SVT Barn", "data/SVT Barn.json"); break;
+        case "Kunskapskanalen": loadCannel("Kunskapskanalen", "data/Kunskapskanalen.json"); break;
+        case "SVT 24": loadCannel("SVT 24", "data/SVT 24.json"); break;
     }
+}
+function loadCannel(h1, url) {
+    let header = document.getElementById("js-title");
+    header.innerHTML = h1;
+    fetchData(url).then(data => { renderData(data); hideLoading(); }).catch((error) => console.log("Error"));
+
 }
 function renderData(data) {
     let program = JSON.parse(JSON.stringify(data));
@@ -61,7 +69,7 @@ function filterList(program) {
     let hour = pad(dateTime.getHours());
     let minute = pad(dateTime.getMinutes());
     let now = "" + hour + minute;
-    
+
     function pad(unit) {
         return (("0") + unit).length > 2 ? unit : "0" + unit;
     }
@@ -185,29 +193,3 @@ async function fetchData(url) {
     const data = await response.json();
     return data;
 }
-function loadSVT1() {
-    let header = document.getElementById("js-title");
-    header.innerHTML = "SVT 1";
-    fetchData("data/SVT 1.json").then(data => { renderData(data); hideLoading(); }).catch((error) => console.log("Error"));
-}
-function loadSVT2() {
-    let header = document.getElementById("js-title");
-    header.innerHTML = "SVT 2";
-    fetchData("data/SVT 2.json").then(data => { renderData(data); hideLoading(); }).catch((error) => console.log("Error"));
-}
-function loadSVTBarn() {
-    let header = document.getElementById("js-title");
-    header.innerHTML = "SVT Barn";
-    fetchData("data/SVT Barn.json").then(data => { renderData(data); hideLoading(); }).catch((error) => console.log("Error"));
-}
-function loadKunskapskanalen() {
-    let header = document.getElementById("js-title");
-    header.innerHTML = "Kunskapskanalen";
-    fetchData("data/Kunskapskanalen.json").then(data => { renderData(data); hideLoading(); }).catch((error) => console.log("Error"));
-}
-function loadSVT24() {
-    let header = document.getElementById("js-title");
-    header.innerHTML = "SVT 24";
-    fetchData("data/SVT 24.json").then(data => { renderData(data); hideLoading(); }).catch((error) => console.log("Error"));
-}
-loadSVT1();
