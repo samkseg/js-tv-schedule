@@ -10,13 +10,7 @@ loadCannel("SVT 1", "data/SVT 1.json");
 
 function setChannel(channel) {
     clearProgram();
-    switch (channel) {
-        case "SVT 1": loadCannel("SVT 1", "data/SVT 1.json"); break;
-        case "SVT 2": loadCannel("SVT 2", "data/SVT 2.json"); break;
-        case "SVT Barn": loadCannel("SVT Barn", "data/SVT Barn.json"); break;
-        case "Kunskapskanalen": loadCannel("Kunskapskanalen", "data/Kunskapskanalen.json"); break;
-        case "SVT 24": loadCannel("SVT 24", "data/SVT 24.json"); break;
-    }
+    loadCannel(channel, "data/" + channel + ".json");
 }
 function loadCannel(h1, url) {
     let header = document.getElementById("js-title");
@@ -24,8 +18,8 @@ function loadCannel(h1, url) {
     fetchData(url).then(data => { renderData(data); hideLoading(); }).catch((error) => console.log("Error"));
 
 }
-function renderData(data) {
-    let program = JSON.parse(JSON.stringify(data));
+async function renderData(data) {
+    let program = data;
     formatList(program);
 }
 function clearProgram() {
@@ -34,23 +28,23 @@ function clearProgram() {
     }
 }
 function formatList(program) {
-    let show = document.createElement("li");
-    show.classList.add("list-group-item");
-    show.classList.add("show-previous");
-    show.innerHTML = "Visa tidigare program";
-    show.style.textAlign = "center";
-    list.appendChild(show);
-    show.onmouseover = function () {
-        show.style.backgroundColor = "#666";
+    let showPrevious = document.createElement("li");
+    showPrevious.classList.add("list-group-item");
+    showPrevious.classList.add("show-previous");
+    showPrevious.innerHTML = "Visa tidigare program";
+    showPrevious.style.textAlign = "center";
+    list.appendChild(showPrevious);
+    showPrevious.onmouseover = function () {
+        showPrevious.style.backgroundColor = "#666";
     }
-    show.onmouseleave = function () {
-        show.style.backgroundColor = "white";
+    showPrevious.onmouseleave = function () {
+        showPrevious.style.backgroundColor = "white";
     }
-    show.onclick = function () {
+    showPrevious.onclick = function () {
         clearProgram();
         let sortedList = sortList(program);
         printList(sortedList);
-        show.remove();
+        showPrevious.remove();
     }
     let filterdList = filterList(program);
     printList(filterdList);
