@@ -9,11 +9,11 @@ menu.style.left = "-300px";
 function setChannel(channel) {
     clearProgram();
     switch (channel) {
-        case "SVT 1" : loadSVT1();break;
-        case "SVT 2" : loadSVT2();break;
-        case "SVT Barn" : loadSVTBarn();break;
-        case "Kunskapskanalen" : loadKunskapskanalen();break;
-        case "SVT 24" : loadSVT24();break;
+        case "SVT 1": loadSVT1(); break;
+        case "SVT 2": loadSVT2(); break;
+        case "SVT Barn": loadSVTBarn(); break;
+        case "Kunskapskanalen": loadKunskapskanalen(); break;
+        case "SVT 24": loadSVT24(); break;
     }
 }
 function renderData(data) {
@@ -57,39 +57,40 @@ function sortList(program) {
     return sortedArray;
 }
 function filterList(program) {
-    let filterdList = [];
 
     let dateTime = new Date();
     let hour = pad(dateTime.getHours());
     let minute = pad(dateTime.getMinutes());
     let now = "" + hour + minute;
 
-    for (let item of program) {
-
-        let time = item.start.charAt(11) + item.start.charAt(12) + item.start.charAt(14) + item.start.charAt(15);
-        let timeParsed = parseInt(time);
-
-        if (timeParsed > now) {
-            let obj = mapFunction(item);
-            filterdList.push(obj);
-        }
-    }
-    filterdList.sort(sortFunction);
     function pad(unit) {
         return (("0") + unit).length > 2 ? unit : "0" + unit;
     }
-    return filterdList;
+
+    let filteredList = program.filter(function (item) {
+        let time = item.start.charAt(11) + item.start.charAt(12) + item.start.charAt(14) + item.start.charAt(15);
+        let timeParsed = parseInt(time);
+        if (timeParsed > now) {
+            return true;
+        }
+    });
+
+    let mappedlist = filteredList.map((item) => {
+        let time = item.start.charAt(11) +
+            item.start.charAt(12) +
+            item.start.charAt(14) +
+            item.start.charAt(15);
+        let obj = [];
+        obj["0"] = time;
+        obj["1"] = item.name;
+        return obj;
+    });
+
+    mappedlist.sort(sortFunction);
+
+    return mappedlist;
 }
-function mapFunction(item) {
-    let time = item.start.charAt(11) +
-        item.start.charAt(12) +
-        item.start.charAt(14) +
-        item.start.charAt(15);
-    let obj = [];
-    obj["0"] = time;
-    obj["1"] = item.name;
-    return obj;
-}
+
 function sortFunction(a, b) {
     if (a[0] === b[0]) {
         return 0;
@@ -187,26 +188,26 @@ async function fetchData(url) {
 function loadSVT1() {
     let header = document.getElementById("js-title");
     header.innerHTML = "SVT 1";
-    fetchData("data/SVT 1.json").then(data => {renderData(data);hideLoading();}).catch((error) => console.log("Error"));
+    fetchData("data/SVT 1.json").then(data => { renderData(data); hideLoading(); }).catch((error) => console.log("Error"));
 }
 function loadSVT2() {
     let header = document.getElementById("js-title");
     header.innerHTML = "SVT 2";
-    fetchData("data/SVT 2.json").then(data => {renderData(data);hideLoading();}).catch((error) => console.log("Error"));
+    fetchData("data/SVT 2.json").then(data => { renderData(data); hideLoading(); }).catch((error) => console.log("Error"));
 }
 function loadSVTBarn() {
     let header = document.getElementById("js-title");
     header.innerHTML = "SVT Barn";
-    fetchData("data/SVT Barn.json").then(data => {renderData(data);hideLoading();}).catch((error) => console.log("Error"));
+    fetchData("data/SVT Barn.json").then(data => { renderData(data); hideLoading(); }).catch((error) => console.log("Error"));
 }
 function loadKunskapskanalen() {
     let header = document.getElementById("js-title");
     header.innerHTML = "Kunskapskanalen";
-    fetchData("data/Kunskapskanalen.json").then(data => {renderData(data);hideLoading();}).catch((error) => console.log("Error"));
+    fetchData("data/Kunskapskanalen.json").then(data => { renderData(data); hideLoading(); }).catch((error) => console.log("Error"));
 }
 function loadSVT24() {
     let header = document.getElementById("js-title");
     header.innerHTML = "SVT 24";
-    fetchData("data/SVT 24.json").then(data => {renderData(data);hideLoading();}).catch((error) => console.log("Error"));
+    fetchData("data/SVT 24.json").then(data => { renderData(data); hideLoading(); }).catch((error) => console.log("Error"));
 }
 loadSVT1();
