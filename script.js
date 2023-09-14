@@ -16,7 +16,6 @@ function setChannel(channel) {
         case "SVT 24" : loadSVT24();break;
     }
 }
-
 function renderData(data) {
     let program = JSON.parse(JSON.stringify(data));
     formatList(program);
@@ -48,24 +47,13 @@ function formatList(program) {
     let filterdList = filterList(program);
     printList(filterdList);
 }
-function convertItem(item) {
-    let time = item.start.charAt(11) +
-        item.start.charAt(12) +
-        item.start.charAt(14) +
-        item.start.charAt(15);
-    let obj = [];
-    obj["0"] = time;
-    obj["1"] = item.name;
-    return obj;
-}
 function sortList(program) {
     const sortedArray = [];
     for (let item of program) {
-        let obj = convertItem(item);
+        let obj = mapFunction(item);
         sortedArray.push(obj);
     }
     sortedArray.sort(sortFunction);
-
     return sortedArray;
 }
 function filterList(program) {
@@ -82,18 +70,25 @@ function filterList(program) {
         let timeParsed = parseInt(time);
 
         if (timeParsed > now) {
-            let obj = convertItem(item);
+            let obj = mapFunction(item);
             filterdList.push(obj);
         }
     }
-
     filterdList.sort(sortFunction);
-
     function pad(unit) {
         return (("0") + unit).length > 2 ? unit : "0" + unit;
     }
-
     return filterdList;
+}
+function mapFunction(item) {
+    let time = item.start.charAt(11) +
+        item.start.charAt(12) +
+        item.start.charAt(14) +
+        item.start.charAt(15);
+    let obj = [];
+    obj["0"] = time;
+    obj["1"] = item.name;
+    return obj;
 }
 function sortFunction(a, b) {
     if (a[0] === b[0]) {
@@ -214,5 +209,4 @@ function loadSVT24() {
     header.innerHTML = "SVT 24";
     fetchData("data/SVT 24.json").then(data => {renderData(data);hideLoading();}).catch((error) => console.log("Error"));
 }
-
 loadSVT1();
