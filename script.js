@@ -28,11 +28,7 @@ async function fetchData(url) {
     const data = await response.json();
     return data;
 }
-async function renderData(data) {
-    let program = data;
-    formatList(program);
-}
-function formatList(program) {
+function renderData(program) {
     let showPrevious = document.createElement("li");
     showPrevious.classList.add("list-group-item");
     showPrevious.classList.add("show-previous");
@@ -47,9 +43,9 @@ function formatList(program) {
     }
     showPrevious.onclick = function () {
         clearProgram();
+        showPrevious.remove();
         let sortedList = sortList(program);
         printList(sortedList);
-        showPrevious.remove();
     }
     let filterdList = filterList(program);
     printList(filterdList);
