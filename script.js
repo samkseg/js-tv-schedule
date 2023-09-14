@@ -57,40 +57,40 @@ function sortList(program) {
     return sortedArray;
 }
 function filterList(program) {
-
     let dateTime = new Date();
     let hour = pad(dateTime.getHours());
     let minute = pad(dateTime.getMinutes());
     let now = "" + hour + minute;
-
+    
     function pad(unit) {
         return (("0") + unit).length > 2 ? unit : "0" + unit;
     }
 
-    let filteredList = program.filter(function (item) {
-        let time = item.start.charAt(11) + item.start.charAt(12) + item.start.charAt(14) + item.start.charAt(15);
-        let timeParsed = parseInt(time);
-        if (timeParsed > now) {
-            return true;
-        }
-    });
-
-    let mappedlist = filteredList.map((item) => {
-        let time = item.start.charAt(11) +
-            item.start.charAt(12) +
-            item.start.charAt(14) +
-            item.start.charAt(15);
-        let obj = [];
-        obj["0"] = time;
-        obj["1"] = item.name;
-        return obj;
-    });
+    let filteredList = program.filter((item) => filterFunction(item, now));
+    let mappedlist = filteredList.map((item) => mapFunction(item));
 
     mappedlist.sort(sortFunction);
-
     return mappedlist;
 }
 
+function filterFunction(item, now) {
+    let time = item.start.charAt(11) + item.start.charAt(12) + item.start.charAt(14) + item.start.charAt(15);
+    let timeParsed = parseInt(time);
+    if (timeParsed > now) {
+        return true;
+    }
+}
+
+function mapFunction(item) {
+    let time = item.start.charAt(11) +
+        item.start.charAt(12) +
+        item.start.charAt(14) +
+        item.start.charAt(15);
+    let obj = [];
+    obj["0"] = time;
+    obj["1"] = item.name;
+    return obj;
+}
 function sortFunction(a, b) {
     if (a[0] === b[0]) {
         return 0;
