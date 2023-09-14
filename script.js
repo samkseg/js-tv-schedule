@@ -12,20 +12,25 @@ function setChannel(channel) {
     clearProgram();
     loadCannel(channel, "data/" + channel + ".json");
 }
-function loadCannel(h1, url) {
-    let header = document.getElementById("js-title");
-    header.innerHTML = h1;
-    fetchData(url).then(data => { renderData(data); hideLoading(); }).catch((error) => console.log("Error"));
-
-}
-async function renderData(data) {
-    let program = data;
-    formatList(program);
-}
 function clearProgram() {
     while (list.firstChild) {
         list.removeChild(list.firstChild);
     }
+}
+function loadCannel(h1, url) {
+    let header = document.getElementById("js-title");
+    header.innerHTML = h1;
+    fetchData(url).then(data => { renderData(data); hideLoading(); }).catch((error) => console.log("Error"));
+}
+async function fetchData(url) {
+    loadingGIF.classList.remove("hidden");
+    const response = await fetch(url);
+    const data = await response.json();
+    return data;
+}
+async function renderData(data) {
+    let program = data;
+    formatList(program);
 }
 function formatList(program) {
     let showPrevious = document.createElement("li");
@@ -63,18 +68,14 @@ function filterList(program) {
     let hour = pad(dateTime.getHours());
     let minute = pad(dateTime.getMinutes());
     let now = "" + hour + minute;
-
     function pad(unit) {
         return (("0") + unit).length > 2 ? unit : "0" + unit;
     }
-
     let filteredList = program.filter((item) => filterFunction(item, now));
     let mappedlist = filteredList.map((item) => mapFunction(item));
-
     mappedlist.sort(sortFunction);
     return mappedlist;
 }
-
 function filterFunction(item, now) {
     let time = item.start.charAt(11) + item.start.charAt(12) + item.start.charAt(14) + item.start.charAt(15);
     let timeParsed = parseInt(time);
@@ -82,7 +83,6 @@ function filterFunction(item, now) {
         return true;
     }
 }
-
 function mapFunction(item) {
     let time = item.start.charAt(11) +
         item.start.charAt(12) +
@@ -180,10 +180,4 @@ function menuAnimation2() {
 }
 function hideLoading() {
     loadingGIF.classList.add("hidden");
-}
-async function fetchData(url) {
-    loadingGIF.classList.remove("hidden");
-    const response = await fetch(url);
-    const data = await response.json();
-    return data;
 }
