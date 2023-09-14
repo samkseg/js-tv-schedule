@@ -8,20 +8,12 @@ menu.style.left = "-300px";
 
 function setChannel(channel) {
     clearProgram();
-    if (channel === "SVT 1") {
-        loadSVT1();
-    }
-    if (channel === "SVT 2") {
-        loadSVT2();
-    }
-    if (channel === "SVT 24") {
-        loadSVT24();
-    }
-    if (channel === "SVT Barn") {
-        loadSVTBarn();
-    }
-    if (channel === "Kunskapskanalen") {
-        loadKunskapskanalen();
+    switch (channel) {
+        case "SVT 1" : loadSVT1();break;
+        case "SVT 2" : loadSVT2();break;
+        case "SVT Barn" : loadSVTBarn();break;
+        case "Kunskapskanalen" : loadKunskapskanalen();break;
+        case "SVT 24" : loadSVT24();break;
     }
 }
 
@@ -186,7 +178,6 @@ function menuAnimation2() {
         }
     }
 }
-
 function hideLoading() {
     loadingGIF.classList.add("hidden");
 }
@@ -199,27 +190,27 @@ async function fetchData(url) {
 function loadSVT1() {
     let header = document.getElementById("js-title");
     header.innerHTML = "SVT 1";
-    fetchData("data/SVT 1.json").then(data => {renderData(data);hideLoading();});
+    fetchData("data/SVT 1.json").then(data => {renderData(data);hideLoading();}).catch((error) => console.log("Error"));
 }
 function loadSVT2() {
     let header = document.getElementById("js-title");
     header.innerHTML = "SVT 2";
-    fetchData("data/SVT 2.json").then(data => {renderData(data);hideLoading();});
+    fetchData("data/SVT 2.json").then(data => {renderData(data);hideLoading();}).catch((error) => console.log("Error"));
 }
 function loadSVTBarn() {
     let header = document.getElementById("js-title");
     header.innerHTML = "SVT Barn";
-    fetchData("data/SVT Barn.json").then(data => {renderData(data);hideLoading();});
+    fetchData("data/SVT Barn.json").then(data => {renderData(data);hideLoading();}).catch((error) => console.log("Error"));
 }
 function loadKunskapskanalen() {
     let header = document.getElementById("js-title");
     header.innerHTML = "Kunskapskanalen";
-    fetchData("data/Kunskapskanalen.json").then(data => {renderData(data);hideLoading();});
+    fetchData("data/Kunskapskanalen.json").then(data => {renderData(data);hideLoading();}).catch((error) => console.log("Error"));
 }
 function loadSVT24() {
     let header = document.getElementById("js-title");
     header.innerHTML = "SVT 24";
-    fetchData("data/SVT 24.json").then(data => renderData(data));
+    fetchData("data/SVT 24.json").then(data => {renderData(data);hideLoading();}).catch((error) => console.log("Error"));
 }
 
 loadSVT1();
