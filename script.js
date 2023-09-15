@@ -75,7 +75,7 @@ function filterList(program) {
 function filterFunction(item, now) {
     let time = item.start.charAt(11) + item.start.charAt(12) + item.start.charAt(14) + item.start.charAt(15);
     let timeParsed = parseInt(time);
-    if (timeParsed > now) {
+    if (timeParsed >= now) {
         return true;
     }
 }
